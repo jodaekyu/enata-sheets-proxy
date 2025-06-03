@@ -1,32 +1,33 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const fetch = require("node-fetch"); // v2 이하
+const fetch = require("node-fetch"); // node-fetch v2 사용
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// GAS 웹 앱 URL
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPvLWyLmg0BkUKQnLlbXdq8cOLDVpnfu11SQEC-ecXrz5yNvoXEExvRVr/exec";
 
 app.post("/save", async (req, res) => {
   try {
     const payload = new URLSearchParams();
-    payload.append("payload", JSON.stringify(req.body)); // 👈 핵심
+    payload.append("payload", JSON.stringify(req.body)); // 핵심
 
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: payload.toString()
     });
 
     const text = await response.text();
-    console.log("✅ GAS 응답:", text); // 디버그용
+    console.log("✅ GAS 응답:", text);
     res.status(200).send({ status: "ok", result: text });
   } catch (error) {
-    console.error("🔥 프록시 서버 오류:", error);
+    console.error("🔥 프록시 서버 오류:", error.message);
     res.status(500).send({ status: "error", message: error.message });
   }
 });
