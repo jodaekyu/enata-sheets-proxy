@@ -12,16 +12,11 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPv
 
 app.post("/save", async (req, res) => {
   try {
-   const response = await fetch(GOOGLE_SCRIPT_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json", // ✅ JSON으로 보냄
-  },
-  body: JSON.stringify(req.body), // ✅ 순수 JSON 그대로 보냄
-});
+    // ✅ payload를 URLSearchParams로 감싸서 전송
+    const payload = new URLSearchParams();
+    payload.append("payload", JSON.stringify(req.body)); // 핵심 포인트
 
-
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
+    const fetchResponse = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -29,7 +24,7 @@ app.post("/save", async (req, res) => {
       body: payload.toString()
     });
 
-    const text = await response.text();
+    const text = await fetchResponse.text();
     console.log("✅ GAS 응답:", text);
     res.status(200).send({ status: "ok", result: text });
   } catch (error) {
