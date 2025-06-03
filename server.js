@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // GAS 웹 앱 URL
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPvLWyLmg0BkUKQnLlbXdq8cOLDVpnfu11SQEC-ecXrz5yNvoXEExvRVr/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwphJ68eBpYNNClsPZU5jsKzniIuK_bS6dvcvRe7rs5g_e8cxrzEAewPxAyGLJeOt9X/exec";
 
 app.post("/save", async (req, res) => {
   try {
