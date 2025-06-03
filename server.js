@@ -1,22 +1,26 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const fetch = require("node-fetch"); // v2 이하 사용
+const fetch = require("node-fetch"); // v2 이하
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// 👇 본인의 Google Apps Script URL
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPvLWyLmg0BkUKQnLlbXdq8cOLDVpnfu11SQEC-ecXrz5yNvoXEExvRVr/exec";
 
-// POST 요청을 Google Apps Script로 전달
+// ✅ JSON을 URL-encoded 문자열로 감싸서 보냄
 app.post("/save", async (req, res) => {
   try {
+    const payload = new URLSearchParams();
+    payload.append("payload", JSON.stringify(req.body)); // 👈 핵심 포인트
+
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req.body),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: payload.toString()
     });
 
     const text = await response.text();
@@ -27,7 +31,6 @@ app.post("/save", async (req, res) => {
   }
 });
 
-// 상태 확인용 엔드포인트
 app.get("/", (req, res) => {
   res.send("✅ Enata Google Sheets Proxy 서버 작동 중");
 });
