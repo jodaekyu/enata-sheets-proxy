@@ -1,13 +1,13 @@
-import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import fetch from "node-fetch"; // CommonJS에서는 import fetch from 'node-fetch'가 안됨
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const fetch = require("node-fetch"); // v2 이하 사용
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// 👇 여기에 본인의 Google Apps Script URL 입력
+// 👇 본인의 Google Apps Script URL
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPvLWyLmg0BkUKQnLlbXdq8cOLDVpnfu11SQEC-ecXrz5yNvoXEExvRVr/exec";
 
 // POST 요청을 Google Apps Script로 전달
