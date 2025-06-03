@@ -12,8 +12,14 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPv
 
 app.post("/save", async (req, res) => {
   try {
-    const payload = new URLSearchParams();
-    payload.append("payload", JSON.stringify(req.body)); // 핵심
+   const response = await fetch(GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json", // ✅ JSON으로 보냄
+  },
+  body: JSON.stringify(req.body), // ✅ 순수 JSON 그대로 보냄
+});
+
 
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
