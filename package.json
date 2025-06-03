@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Proxy server to relay data to Google Sheets from Enata Tarot WebApp",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
