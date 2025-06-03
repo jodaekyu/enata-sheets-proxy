@@ -9,11 +9,10 @@ app.use(bodyParser.json());
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzH5K50hiNgPvLWyLmg0BkUKQnLlbXdq8cOLDVpnfu11SQEC-ecXrz5yNvoXEExvRVr/exec";
 
-// ✅ JSON을 URL-encoded 문자열로 감싸서 보냄
 app.post("/save", async (req, res) => {
   try {
     const payload = new URLSearchParams();
-    payload.append("payload", JSON.stringify(req.body)); // 👈 핵심 포인트
+    payload.append("payload", JSON.stringify(req.body)); // 👈 핵심
 
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
@@ -24,6 +23,7 @@ app.post("/save", async (req, res) => {
     });
 
     const text = await response.text();
+    console.log("✅ GAS 응답:", text); // 디버그용
     res.status(200).send({ status: "ok", result: text });
   } catch (error) {
     console.error("🔥 프록시 서버 오류:", error);
